@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+*{
+    font-family: 'Press Start 2P', cursive;
+
+}
+
+.web{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container{
+    
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid black;
+    height: 650px;
+    width: 550px;
+    background-color: rgb(255, 255, 255);
+    
+}
+
+
+
+div h1{
+    font-size: 2rem;  
+    text-shadow: 2px 2px #000;
+    margin-top: 20px;
+}
+
+.utility{
+    display: flex;
+}
+.utility input{
+    width: 270px;
+    margin-right: 5px;
+}
+.utility button{
+    background-color: #ffcb05;
+}
+
+.playAgain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 72px;
+}
+
+.playAgain button:disabled:hover{
+    pointer-events: none
+}
+
+@media(max-width:880px ){
+    *{
+        font-size: 13px;
+    }
+    .container{
+        width: 450px;
+        margin: auto;
+    }
+    div h1{
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .utility{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .utility input{
+        width: 80%;
+        margin-bottom: 10px;
+    }
+    
+}
+
+@media(max-width:490px ){
+    *{
+        font-size: 13px;
+    }
+    .container{
+        width: 90%;
+        margin: auto;
+    }
+    div h1{
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .utility{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .utility input{
+        width: 80%;
+        margin-bottom: 10px;
+    }
+    
+}
