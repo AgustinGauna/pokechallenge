@@ -1,6 +1,6 @@
 import "nes.css/css/nes.min.css";
 import React, { useEffect, useState } from "react";
-import api from "./api";
+import api, { POKEMON } from "./api";
 import { Pokemon } from "./types";
 import { Image, Button, Container, Input } from '@chakra-ui/react'
 import styles from './App.module.css';
@@ -13,8 +13,8 @@ function App() {
     id: 0
   });
   const [answered, setAnswered] = useState<Boolean>(false)
-  const [loading, setLoading] = useState(true)
-  const [answer, setAnswer] = useState("")
+  const [loading, setLoading] = useState<Boolean>(true)
+  const [answer, setAnswer] = useState<string>("")
   const [result, setResult] = useState("")
   const [wins, setWins] = useState(
     // @ts-ignore
@@ -24,6 +24,7 @@ function App() {
     // @ts-ignore
     JSON.parse(localStorage.getItem("loses") || 0)
   )
+  const [pokelist, setPokelist] = useState<string[]>()
 
   const getPokemon = async () => {
     setLoading(true);
@@ -38,11 +39,13 @@ function App() {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('wins', JSON.stringify(wins))
+    if (typeof wins) {
+      localStorage.setItem('wins', JSON.stringify(wins))
+    }
   }, [wins])
 
   useEffect(() => {
-    localStorage.setItem('loses', JSON.stringify(loses))
+    localStorage.setItem('loses', "" + JSON.stringify(loses))
   }, [loses])
 
 
@@ -58,10 +61,13 @@ function App() {
       setLoses(newLoses)
     }
     setAnswered(true)
+    setAnswer("")
   }
 
   const getUserGuess = (e: any) => {
     setAnswer(e.target.value)
+    setPokelist(POKEMON.filter(poke => poke.startsWith(e.target.value)))
+
   }
 
   const playAgain = () => {
@@ -70,20 +76,39 @@ function App() {
     setAnswered(false)
     setResult("")
   }
+  const handlePokeSelect = (poke: string) => {
+    setAnswer(poke)
+  }
 
 
   return (
     <div className={styles.web}>
-
       <h1 className="nes-text is-warning">Can you guess the pokemon?</h1>
       <div className={styles.container}>
         <Image className={styles.imagen} src={pokemon.image} alt={pokemon.name} boxSize='250px' filter='auto' brightness={answered ? '100%' : '0%'} />
-        <div className={styles.utility}>
-          <Input value={answer} onChange={getUserGuess} className="nes-input is-success" type="text" />
-          <Button disabled={answered ? true : false} className="nes-btn is-primary" onClick={() => verifyPokemon()}>Answer</Button>
+        <div>
+          <div className={styles.utility}>
+            <Input value={answer} onChange={getUserGuess} className="nes-input is-success" type="text" />
+
+            <Button disabled={answered ? true : false} className="nes-btn is-primary" onClick={() => verifyPokemon()}>GO</Button>
+          </div>
+          <div className={styles.answersListContainer}>
+            {answer.length > 0 ?
+              <ul className={styles.answersList}>
+                {pokelist ? pokelist.map((poke, index) => {
+                  return (
+                    <li className="nes-pointer" onClick={() => handlePokeSelect(poke)} key={index}>{poke}</li>
+                  )
+                }) : ""}
+              </ul>
+              :
+              <div></div>
+            }
+          </div>
         </div>
         <div className={styles.playAgain}>
           {result}
+          {answered ? <div style={result === "You won!" ? { color: "green" } : { color: "red" }}>It was {pokemon.name}</div> : ""}
           {answered ? <Button onClick={() => playAgain()} className="nes-btn is-success">Play Again!</Button> : ""}
         </div>
 
