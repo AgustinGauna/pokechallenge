@@ -25,6 +25,7 @@ function App() {
     JSON.parse(localStorage.getItem("loses") || 0)
   )
   const [pokelist, setPokelist] = useState<string[]>()
+  const [hidePokelist, setHidePokelist] = useState<Boolean>(false)
 
   const getPokemon = async () => {
     setLoading(true);
@@ -67,7 +68,7 @@ function App() {
   const getUserGuess = (e: any) => {
     setAnswer(e.target.value)
     setPokelist(POKEMON.filter(poke => poke.startsWith(e.target.value)))
-
+    setHidePokelist(false)
   }
 
   const playAgain = () => {
@@ -78,6 +79,7 @@ function App() {
   }
   const handlePokeSelect = (poke: string) => {
     setAnswer(poke)
+    setHidePokelist(true)
   }
 
 
@@ -93,17 +95,19 @@ function App() {
             <Button disabled={answered ? true : false} className="nes-btn is-primary" onClick={() => verifyPokemon()}>GO</Button>
           </div>
           <div className={styles.answersListContainer}>
-            {answer.length > 0 ?
-              <ul className={styles.answersList}>
-                {pokelist ? pokelist.map((poke, index) => {
-                  return (
-                    <li className="nes-pointer" onClick={() => handlePokeSelect(poke)} key={index}>{poke}</li>
-                  )
-                }) : ""}
-              </ul>
-              :
-              <div></div>
-            }
+            {hidePokelist ? <></> :
+              <>
+                {answer.length > 0 ?
+                  <ul className={styles.answersList}>
+                    {pokelist ? pokelist.map((poke, index) => {
+                      return (
+                        <li className="nes-pointer" onClick={() => handlePokeSelect(poke)} key={index}>{poke}</li>
+                      )
+                    }) : ""}
+                  </ul>
+                  :
+                  <div></div>
+                }</>}
           </div>
         </div>
         <div className={styles.playAgain}>
