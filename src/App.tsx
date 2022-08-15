@@ -101,7 +101,7 @@ function App() {
                   <ul className={styles.answersList}>
                     {pokelist ? pokelist.map((poke, index) => {
                       return (
-                        <li className="nes-pointer" onClick={() => handlePokeSelect(poke)} key={index}>{poke}</li>
+                        <li tabIndex={0} className="nes-pointer" onClick={() => handlePokeSelect(poke)} key={index}>{poke}</li>
                       )
                     }) : ""}
                   </ul>
